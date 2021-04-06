@@ -22,6 +22,7 @@ export const Colors: any = {
   Error: '#E06454',
   GrayScale: {
     White: '#FFFFFF',
+    Divider: '#F5F5F5',
     Light: '#E8E8E8',
     Medium: '#CCCCCC',
     Dark: '#767676',
@@ -65,6 +66,10 @@ export const FontStyle: any = {
   Button: {
     fontSize: 18,
     fontFamily: FontFamily.Medium,
+  },
+  LabelButton: {
+    fontSize: 18,
+    fontFamily: FontFamily.Regular,
   },
   Header: {
     fontSize: 24,

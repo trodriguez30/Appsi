@@ -5,17 +5,18 @@ import {
   KeyboardAvoidingView,
   StyleSheet,
   Text,
+  ImageBackground,
 } from 'react-native';
 import { Button } from 'react-native-paper';
 import Constants from 'expo-constants';
 
 import { Metrics, Shadow, Colors, FontStyle } from '../definitions/theme';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Formik, ErrorMessage } from 'formik';
 import * as yup from 'yup';
 import InputField from '../components/InputField';
 import ErrorText from '../components/ErrorText';
 import Checkbox from '../components/Checkbox';
+import { StatusBar } from 'expo-status-bar';
 
 interface LoginValues {
   username: string;
@@ -31,7 +32,7 @@ const LoginSchema = yup.object().shape({
     .min(6, 'La contraseña debe ser mínimo de 6 caracteres!'),
 });
 
-const Login = () => {
+const Login = (props: any) => {
   const initialValues: LoginValues = { username: '', password: '' };
 
   const [isChecked, setIsChecked] = useState(false);
@@ -45,103 +46,103 @@ const Login = () => {
       {(msg) => <ErrorText error={msg} />}
     </ErrorMessage>
   );
+
   return (
-    <View style={{ flex: 1, position: 'relative', zIndex: 1 }}>
-      <LinearGradient
-        colors={[Colors.Primary, Colors.Second]}
-        style={styles.container}
-      />
-      <View
+    <View style={{ flex: 1 }}>
+      <ImageBackground
+        source={require('../assets/background.png')}
         style={{
           flex: 1,
-          height: Metrics.ScreenHeight,
-          width: Metrics.ScreenWidth,
-          position: 'absolute',
-          zIndex: 2,
         }}
       >
-        <View style={styles.iconContainer}>
-          <View style={[Shadow, styles.iconDimensions]}>
-            <Image
-              source={require('../assets/icon.png')}
-              resizeMode="contain"
-              style={styles.iconDimensions}
-            />
-          </View>
-        </View>
-        <View style={styles.formContainer}>
-          <View style={[styles.formContent, Shadow]}>
-            <Formik
-              initialValues={initialValues}
-              onSubmit={(values) => console.log(values)}
-              validationSchema={LoginSchema}
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values) => console.log(values)}
+          validationSchema={LoginSchema}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            <KeyboardAvoidingView
+              behavior="height"
+              style={{
+                paddingHorizontal: Metrics.Padding * 2,
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                height: Metrics.ScreenHeight * 0.53,
+                position: 'absolute',
+                bottom: 0,
+              }}
             >
-              {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                <KeyboardAvoidingView
-                  behavior="height"
-                  style={{
-                    flex: 1,
+              <InputField
+                mode="outlined"
+                label="Usuario"
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                value={values.username}
+                error={<ErrorComponent name="username" />}
+                isError={errors.username ? true : false}
+              />
+              <InputField
+                mode="outlined"
+                label="Contraseña"
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                value={values.password}
+                error={<ErrorComponent name="password" />}
+                isError={errors.password ? true : false}
+              />
+              <View style={styles.loginAction}>
+                <Text style={[FontStyle.LabelButton, styles.loginButtonLabel]}>
+                  Iniciar sesión
+                </Text>
+                <Button
+                  icon="arrow-right"
+                  onPress={handleSubmit}
+                  labelStyle={[
+                    FontStyle.LabelButton,
+                    { color: Colors.GrayScale.White },
+                  ]}
+                  mode="contained"
+                  compact
+                  style={[Shadow, styles.loginButton]}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
+                <Checkbox handleChecked={_setChecked} label="Recordar" />
+                <Button
+                  mode="text"
+                  style={[Shadow, { marginTop: 8 }]}
+                  uppercase={false}
+                  contentStyle={{
+                    borderBottomColor: Colors.GrayScale.SuperDark,
+                    borderBottomWidth: 1,
                   }}
+                  labelStyle={{
+                    ...FontStyle.Min,
+                    color: Colors.GrayScale.SuperDark,
+                  }}
+                  onPress={() => props.navigation.navigate('Services')}
                 >
-                  <View
-                    style={{
-                      padding: Metrics.Padding * 2,
-                      flex: 1,
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Text style={[FontStyle.Subtitle, { flex: 1, textAlign: 'center' }]}>
-                      SIGN IN
-                    </Text>
-                    <InputField
-                      mode="outlined"
-                      label="Usuario"
-                      onChangeText={handleChange('username')}
-                      onBlur={handleBlur('username')}
-                      value={values.username}
-                      error={<ErrorComponent name="username" />}
-                    />
-                    <InputField
-                      mode="outlined"
-                      label="Contraseña"
-                      onChangeText={handleChange('password')}
-                      onBlur={handleBlur('password')}
-                      value={values.password}
-                      error={<ErrorComponent name="password" />}
-                    />
-                    <Button
-                      uppercase={false}
-                      labelStyle={FontStyle.Button}
-                      mode="contained"
-                      onPress={handleSubmit}
-                      style={{ ...Shadow, marginVertical: Metrics.Margin * 2}}
-                    >
-                      Iniciar sesión
-                    </Button>
-                    <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
-                      <Checkbox handleChecked={_setChecked} label="Recordar" />
-                      <Button
-                        mode="text"
-                        style={Shadow}
-                        uppercase={false}
-                        contentStyle={{ borderBottomColor: Colors.GrayScale.SuperDark, borderBottomWidth: 1 }}
-                        labelStyle={{...FontStyle.Normal, color: Colors.GrayScale.SuperDark}}
-                        onPress={() => null}
-                      >
-                        Olvidé mi contraseña
-                      </Button>
-                    </View>
-                    <View style={styles.versionContainer}>
-                    <Text style={styles.versionNumber}>{`V ${Constants.manifest.version}`}</Text>
-                    <Text style={styles.versionNumber}>TR - 2021 {'\u00A9'}</Text>
-                    </View>
-                  </View>
-                </KeyboardAvoidingView>
-              )}
-            </Formik>
-          </View>
-        </View>
-      </View>
+                  Olvidé mi contraseña
+                </Button>
+              </View>
+              <View style={styles.versionContainer}>
+                <Text
+                  style={styles.versionNumber}
+                >{`V ${Constants.manifest.version}`}</Text>
+                <Text style={styles.versionNumber}>TR - 2021 {'\u00A9'}</Text>
+              </View>
+            </KeyboardAvoidingView>
+          )}
+        </Formik>
+      </ImageBackground>
+      <StatusBar style="light" />
     </View>
   );
 };
@@ -163,16 +164,10 @@ const styles = StyleSheet.create({
     borderRadius: 50,
   },
   formContainer: {
-    height: Metrics.ScreenHeight * 0.75,
+    flex: 1,
+    height: Metrics.ScreenHeight,
     width: Metrics.ScreenWidth,
-    paddingVertical: Metrics.Padding * 4,
-    paddingHorizontal: Metrics.Padding * 2,
-  },
-  formContent: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: Colors.GrayScale.White,
-    borderRadius: Metrics.BorderRadius,
+    justifyContent: 'flex-end',
   },
   versionContainer: {
     flex: 1,
@@ -182,8 +177,26 @@ const styles = StyleSheet.create({
   versionNumber: {
     ...FontStyle.Min,
     textAlign: 'center',
-    color: Colors.GrayScale.Dark,
-  }
+    color: Colors.Primary,
+    ...Shadow,
+  },
+  loginAction: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 50,
+  },
+  loginButton: {
+    height: 50,
+    width: 50,
+    backgroundColor: Colors.Primary,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 25,
+  },
+  loginButtonLabel: {
+    color: Colors.GrayScale.SuperDark,
+  },
 });
 
 export default Login;

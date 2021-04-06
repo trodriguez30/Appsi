@@ -49,20 +49,18 @@ const styles = StyleSheet.create({
 		position: 'relative',
   },
   checkboxLabel: {
-    ...FontStyle.Normal,
+    ...FontStyle.Min,
 		letterSpacing: 1,
     color: Colors.GrayScale.SuperDark,
-		marginLeft: 4,
   },
 	borderIos: {
 		borderColor: Colors.Primary,
-		borderWidth: 2,
+		borderWidth: 1,
 		borderRadius: 8,
 		position: 'absolute',
 		zIndex: 1,
-		width: 30,
-		height: 30,
-		marginLeft: 3,
+		width: 25,
+		height: 25,
 	}
 });
 
