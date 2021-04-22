@@ -22,12 +22,27 @@ export const Colors: any = {
   Error: '#E06454',
   GrayScale: {
     White: '#FFFFFF',
-    Divider: '#F5F5F5',
+    Divider: '#CCCCCC',
     Light: '#E8E8E8',
     Medium: '#CCCCCC',
     Dark: '#767676',
     VeryDark: '#585858',
     SuperDark: '#3B3B3B',
+    BackgroundModal: 'rgba(118, 118, 118, 0.4)',
+  },
+  Tags: {
+    Primary: {
+      Background: 'rgba(140, 29, 94, 0.3)',
+      Text: '#8C1D5E',
+    },
+    Second: {
+      Background: 'rgba(230, 227, 106, 0.3)',
+      Text: '#A19E00',
+    },
+    Third: {
+      Background: 'rgba(118, 118, 118, 0.3)',
+      Text: '#585858',
+    },
   },
 };
 

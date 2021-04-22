@@ -6,11 +6,12 @@ import { Colors, Metrics } from '../definitions/theme';
 import moment from 'moment';
 import 'moment/locale/es';
 import { StatusBar } from 'expo-status-bar';
-import { ServicesArray } from '../definitions/hardcode';
-const Services = () => {
+import { AssistantsArray } from '../definitions/hardcode';
+import AssistantItem from '../components/AssistantItem';
+const Assistants = () => {
   moment.locale('es');
 
-  const renderItem = ({ item }: any) => <ServiceItem {...item} />;
+  const renderItem = ({ item }: any) => <AssistantItem {...item} />;
   return (
     <View style={{ flex: 1, zIndex: 1 }}>
       <ImageBackground
@@ -22,14 +23,14 @@ const Services = () => {
         <Header
           rightIcon="dots-vertical"
           rightAction={() => null}
-          title="Servicios"
-          subtitle={moment().format('MMMM YYYY')}
+          title="Asistentes"
+          subtitle={`${AssistantsArray.length.toString()} registros`}
           color={Colors.GrayScale.White}
         />
         <View style={{ flex: 1, paddingHorizontal: Metrics.Padding }}>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={ServicesArray}
+            data={AssistantsArray}
             renderItem={renderItem}
             keyExtractor={(item: any) => item.id}
           />
@@ -40,4 +41,4 @@ const Services = () => {
   );
 };
 
-export default Services;
+export default Assistants;

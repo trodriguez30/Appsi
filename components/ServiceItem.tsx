@@ -17,6 +17,9 @@ interface ServiceItemProps {
 
 const ServiceItem = (props: ServiceItemProps) => {
   moment.locale('es');
+  const status = moment(props.created_at).isBefore(moment()) ? 'Cumplido' : 'Activo';
+  const backgroundColor = moment(props.created_at).isBefore(moment()) ? Colors.Tags.Second.Background : Colors.Tags.Primary.Background;
+  const color = moment(props.created_at).isBefore(moment()) ? Colors.Tags.Second.Text : Colors.Tags.Primary.Text;
   return (
     <View style={styles.serviceContainer}>
       <View>
@@ -51,6 +54,9 @@ const ServiceItem = (props: ServiceItemProps) => {
         </Button>
         <Text style={[FontStyle.Normal, { color: Colors.GrayScale.Dark }]}>{props['created_at']}</Text>
       </View>
+      <View style={[styles.tag, { backgroundColor }]}>
+        <Text style={{ ...FontStyle.Min, color }}>{status}</Text>
+      </View>
     </View>
   );
 };
@@ -64,6 +70,7 @@ const styles = StyleSheet.create({
     padding: Metrics.Padding,
     marginBottom: Metrics.Margin,
     justifyContent: 'space-between',
+    position: 'relative',
   },
   divider: {
     marginVertical: Metrics.Margin / 2,
@@ -75,6 +82,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
+  tag: { position: 'absolute', right: Metrics.Padding, top: Metrics.Padding, borderRadius: 4, paddingHorizontal: 8, paddingVertical: 4}
 });
 
 export default ServiceItem;

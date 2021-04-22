@@ -1,59 +1,87 @@
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import { Portal } from 'react-native-paper';
-const Tab = createMaterialBottomTabNavigator();
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+const Tab = createBottomTabNavigator();
 
 import LoginScreen from '../screens/Login';
 import ServicesScreen from '../screens/Services';
+import OptionsModalScreen from '../screens/OptionsModal';
+import AssistansScreen from '../screens/Assistants';
 import { Colors } from '../definitions/theme';
 import TabbarIcon from '../components/TabbarIcon';
-import FabIcon from '../components/FabIcon';
-
+import ModalOptions from './ModalOptions';
 const Stack = createStackNavigator();
 
-const SpaceComponent = () =>{ return <></>};
+function ServicesStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Services" component={ServicesScreen} />
+      <Stack.Screen name="ServiceDetails" component={ServicesScreen} />
+      <Stack.Screen name="OptionsModal" component={OptionsModalScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function AssistantsStack() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen name="Assistants" component={AssistansScreen} />
+      <Stack.Screen name="AssistantDetails" component={AssistansScreen} />
+      <Stack.Screen name="OptionsModal" component={OptionsModalScreen} />
+    </Stack.Navigator>
+  );
+}
+
+const CreateComponent = () => {
+  return null;
+};
 
 const AppStack = () => (
   <NavigationContainer>
     <Tab.Navigator
-      barStyle={{
+      sceneContainerStyle={{
         backgroundColor: Colors.GrayScale.White,
         borderTopLeftRadius: 15,
         borderTopRightRadius: 15,
         height: 50,
         justifyContent: 'center',
         zIndex: 100,
+        position: 'relative',
       }}
     >
       <Tab.Screen
         name="Services"
-        component={ServicesScreen}
+        component={ServicesStack}
         options={{
           tabBarLabel: '',
           tabBarIcon: (props) => <TabbarIcon {...props} route="services" />,
         }}
       />
       <Tab.Screen
-        name="null"
-        component={SpaceComponent}
+        name="Create"
+        component={CreateComponent}
         options={{
-          tabBarLabel: '',
+          tabBarButton: () => <ModalOptions />,
         }}
       />
       <Tab.Screen
         name="Assistants"
-        component={ServicesScreen}
+        component={AssistantsStack}
         options={{
           tabBarLabel: '',
           tabBarIcon: (props) => <TabbarIcon {...props} route="assistants" />,
         }}
       />
     </Tab.Navigator>
-    <Portal>
-      <FabIcon />
-    </Portal>
   </NavigationContainer>
 );
 
